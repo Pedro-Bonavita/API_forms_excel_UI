@@ -1,0 +1,850 @@
+!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliação do App — Estufa Verde</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-950: #0e0a1f;
+    --purple-900: #1a1040;
+    --purple-800: #26215C;
+    --purple-700: #3C3489;
+    --purple-600: #534AB7;
+    --purple-400: #7F77DD;
+    --purple-200: #AFA9EC;
+    --purple-100: #CECBF6;
+    --purple-50:  #EEEDFE;
+    --amber-600:  #BA7517;
+    --amber-500:  #EF9F27;
+    --amber-300:  #FAC775;
+    --amber-100:  #FAEEDA;
+    --green-600:  #0F6E56;
+    --green-100:  #E1F5EE;
+    --coral-600:  #993C1D;
+    --coral-100:  #FAECE7;
+    --white: #FAFAF8;
+    --text: #1a1a2e;
+    --text-muted: #6b6890;
+    --border: rgba(83,74,183,0.15);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--purple-950);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 10%, rgba(83,74,183,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 85% 90%, rgba(239,159,39,0.15) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 60% at 90% 20%, rgba(127,119,221,0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .noise {
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 3rem 2rem 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .logo-ring {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple-600), var(--amber-500));
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    box-shadow: 0 0 0 8px rgba(83,74,183,0.15), 0 0 40px rgba(239,159,39,0.25);
+  }
+
+  .logo-ring::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--purple-900);
+  }
+
+  .logo-ring span {
+    position: relative;
+    z-index: 1;
+    font-size: 28px;
+    filter: none;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 38px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--amber-300), var(--amber-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--purple-200);
+    line-height: 1.65;
+    max-width: 380px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  .pill-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .pill-amber {
+    background: rgba(239,159,39,0.12);
+    border: 1px solid rgba(239,159,39,0.3);
+    color: var(--amber-300);
+  }
+
+  .pill-purple {
+    background: rgba(127,119,221,0.12);
+    border: 1px solid rgba(127,119,221,0.3);
+    color: var(--purple-200);
+  }
+
+  /* GALLERY */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .g-item {
+    border-radius: var(--radius);
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    position: relative;
+    border: 1px solid rgba(127,119,221,0.2);
+    cursor: default;
+    transition: transform 0.25s, border-color 0.25s;
+  }
+
+  .g-item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(239,159,39,0.4);
+  }
+
+  .g-item svg {
+    width: 100%; height: 100%;
+    display: block;
+  }
+
+  .g-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 6px 8px;
+    background: linear-gradient(to top, rgba(14,10,31,0.85), transparent);
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 3px;
+    background: rgba(127,119,221,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--purple-600), var(--amber-500));
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    color: var(--purple-200);
+    white-space: nowrap;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* CARDS */
+  .card {
+    background: rgba(26,16,64,0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(127,119,221,0.18);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .card:focus-within {
+    border-color: rgba(127,119,221,0.45);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.1rem;
+  }
+
+  .card-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    background: rgba(83,74,183,0.25);
+    border: 1px solid rgba(127,119,221,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--purple-400);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .new-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 500;
+    background: rgba(239,159,39,0.15);
+    border: 1px solid rgba(239,159,39,0.3);
+    color: var(--amber-300);
+    letter-spacing: 0.04em;
+    vertical-align: middle;
+  }
+
+  .q-label {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .q-req {
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--amber-500);
+    margin-right: 6px;
+    vertical-align: middle;
+    margin-top: -2px;
+  }
+
+  .q-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-weight: 300;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background: rgba(14,10,31,0.5);
+    border: 1px solid rgba(127,119,221,0.2);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    line-height: 1.5;
+  }
+
+  input[type="text"]::placeholder,
+  textarea::placeholder {
+    color: rgba(175,169,236,0.35);
+  }
+
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--purple-400);
+    box-shadow: 0 0 0 3px rgba(127,119,221,0.12);
+  }
+
+  textarea { resize: vertical; min-height: 90px; }
+
+  .char-count {
+    text-align: right;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 5px;
+  }
+
+  /* STARS */
+  .stars {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .star {
+    width: 46px; height: 46px;
+    background: rgba(14,10,31,0.5);
+    border: 1px solid rgba(127,119,221,0.2);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: rgba(127,119,221,0.3);
+    user-select: none;
+  }
+
+  .star:hover, .star.lit {
+    border-color: var(--amber-500);
+    background: rgba(239,159,39,0.1);
+    color: var(--amber-500);
+    transform: scale(1.08);
+  }
+
+  .star-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 6px;
+    font-weight: 300;
+    min-width: 80px;
+    transition: color 0.2s;
+  }
+
+  /* RADIO OPTIONS */
+  .radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .r-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: rgba(14,10,31,0.4);
+    border: 1px solid rgba(127,119,221,0.18);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+  }
+
+  .r-opt:hover {
+    border-color: rgba(127,119,221,0.45);
+    background: rgba(83,74,183,0.12);
+  }
+
+  .r-opt.sel {
+    border-color: var(--purple-600);
+    background: rgba(83,74,183,0.18);
+  }
+
+  .r-opt.sel.green {
+    border-color: var(--green-600);
+    background: rgba(15,110,86,0.12);
+  }
+
+  .r-opt.sel.red {
+    border-color: var(--coral-600);
+    background: rgba(153,60,29,0.12);
+  }
+
+  .r-opt.sel.amber {
+    border-color: rgba(186,117,23,0.6);
+    background: rgba(239,159,39,0.08);
+  }
+
+  .r-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(127,119,221,0.3);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s;
+    position: relative;
+  }
+
+  .r-opt.sel .r-dot {
+    border-color: var(--purple-400);
+    background: var(--purple-600);
+  }
+
+  .r-dot::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--white);
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+
+  .r-opt.sel .r-dot::after { opacity: 1; }
+
+  .r-icon {
+    font-size: 17px;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(127,119,221,0.1);
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .r-main { font-size: 14px; color: var(--white); font-weight: 400; line-height: 1.3; }
+  .r-sub  { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-weight: 300; }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 0.5rem;
+    border: none;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-400) 100%);
+    color: var(--white);
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.02em;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(239,159,39,0.3) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .submit-btn:hover::before { opacity: 1; }
+  .submit-btn:hover { transform: translateY(-1px); }
+  .submit-btn:active { transform: scale(0.99); }
+
+  .submit-btn.error {
+    background: linear-gradient(135deg, var(--coral-600), #D85A30);
+  }
+
+  /* SUCCESS */
+  .success {
+    display: none;
+    text-align: center;
+    padding: 3rem 2rem;
+    background: rgba(26,16,64,0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(127,119,221,0.2);
+    border-radius: var(--radius);
+  }
+
+  .check-ring {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(239,159,39,0.12);
+    border: 2px solid var(--amber-500);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 1.5rem;
+    animation: pop 0.4s cubic-bezier(.4,0,.2,1) both;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
+  .success h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .success p {
+    font-size: 14px;
+    color: var(--purple-200);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ANIMATIONS */
+  .card {
+    animation: fadeUp 0.4s ease both;
+  }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero { animation: fadeUp 0.5s ease both; }
+  .gallery { animation: fadeUp 0.5s ease 0.05s both; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--purple-950); }
+  ::-webkit-scrollbar-thumb { background: var(--purple-700); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="logo-ring"><span>🌿</span></div>
+    <h1>Avalie sua experiência<br>com o <em>app</em></h1>
+    <p>Sua opinião ajuda a cultivar um produto ainda melhor. Rápido — menos de 2 minutos.</p>
+    <div class="pill-row">
+      <span class="pill pill-amber">🌻 Equipamentos de Estufa</span>
+      <span class="pill pill-purple">⏱ ~2 min</span>
+    </div>
+  </div>
+
+  <!-- GALLERY (SVG illustrations) -->
+  <div class="gallery">
+    <div class="g-item">
+      <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g1" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#3C3489"/>
+            <stop offset="100%" stop-color="#0e0a1f"/>
+          </radialGradient>
+        </defs>
+        <rect width="120" height="90" fill="url(#g1)"/>
+        <!-- LED grid -->
+        <g>
+          <circle cx="30" cy="28" r="4" fill="#AFA9EC" opacity="0.9"/>
+          <circle cx="45" cy="28" r="4" fill="#EF9F27" opacity="0.9"/>
+          <circle cx="60" cy="28" r="4" fill="#AFA9EC" opacity="0.9"/>
+          <circle cx="75" cy="28" r="4" fill="#EF9F27" opacity="0.9"/>
+          <circle cx="90" cy="28" r="4" fill="#AFA9EC" opacity="0.9"/>
+          <circle cx="30" cy="42" r="4" fill="#EF9F27" opacity="0.9"/>
+          <circle cx="45" cy="42" r="4" fill="#AFA9EC" opacity="0.9"/>
+          <circle cx="60" cy="42" r="4" fill="#EF9F27" opacity="0.9"/>
+          <circle cx="75" cy="42" r="4" fill="#AFA9EC" opacity="0.9"/>
+          <circle cx="90" cy="42" r="4" fill="#EF9F27" opacity="0.9"/>
+          <!-- glow circles -->
+          <circle cx="45" cy="28" r="8" fill="#EF9F27" opacity="0.15"/>
+          <circle cx="60" cy="42" r="8" fill="#EF9F27" opacity="0.12"/>
+        </g>
+        <!-- bar beneath -->
+        <rect x="20" y="54" width="80" height="4" rx="2" fill="rgba(127,119,221,0.3)"/>
+        <!-- plants below lights -->
+        <rect x="34" y="65" width="3" height="15" rx="1.5" fill="#4CAF50" opacity="0.8"/>
+        <rect x="58" y="60" width="3" height="20" rx="1.5" fill="#66BB6A" opacity="0.8"/>
+        <rect x="82" y="67" width="3" height="13" rx="1.5" fill="#4CAF50" opacity="0.8"/>
+      </svg>
+      <div class="g-label">Iluminação LED</div>
+    </div>
+
+    <div class="g-item">
+      <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g2" cx="50%" cy="60%" r="60%">
+            <stop offset="0%" stop-color="#1a1040"/>
+            <stop offset="100%" stop-color="#0e0a1f"/>
+          </radialGradient>
+        </defs>
+        <rect width="120" height="90" fill="url(#g2)"/>
+        <!-- Estufa outline -->
+        <path d="M20 70 L20 35 Q60 10 100 35 L100 70 Z" fill="none" stroke="rgba(127,119,221,0.4)" stroke-width="1.5"/>
+        <!-- Plants -->
+        <rect x="40" y="55" width="2.5" height="15" rx="1" fill="#4CAF50" opacity="0.9"/>
+        <ellipse cx="38" cy="52" rx="6" ry="4" fill="#66BB6A" opacity="0.8"/>
+        <rect x="58" y="50" width="2.5" height="20" rx="1" fill="#388E3C"/>
+        <ellipse cx="56" cy="47" rx="7" ry="5" fill="#4CAF50" opacity="0.9"/>
+        <rect x="76" y="57" width="2.5" height="13" rx="1" fill="#4CAF50" opacity="0.8"/>
+        <ellipse cx="74" cy="54" rx="5" ry="4" fill="#81C784" opacity="0.8"/>
+        <!-- floor -->
+        <rect x="20" y="69" width="80" height="2" rx="1" fill="rgba(83,74,183,0.4)"/>
+        <!-- amber dots (droplets) -->
+        <circle cx="48" cy="42" r="1.5" fill="#EF9F27" opacity="0.7"/>
+        <circle cx="65" cy="38" r="1.5" fill="#EF9F27" opacity="0.5"/>
+      </svg>
+      <div class="g-label">Cultivo em estufa</div>
+    </div>
+
+    <div class="g-item">
+      <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g3" cx="30%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#534AB7"/>
+            <stop offset="100%" stop-color="#1a1040"/>
+          </radialGradient>
+        </defs>
+        <rect width="120" height="90" fill="url(#g3)"/>
+        <!-- Shelves -->
+        <rect x="18" y="30" width="84" height="3" rx="1.5" fill="rgba(175,169,236,0.5)"/>
+        <rect x="18" y="55" width="84" height="3" rx="1.5" fill="rgba(175,169,236,0.5)"/>
+        <rect x="18" y="75" width="84" height="3" rx="1.5" fill="rgba(175,169,236,0.35)"/>
+        <!-- shelf legs -->
+        <rect x="22" y="30" width="2" height="48" rx="1" fill="rgba(127,119,221,0.3)"/>
+        <rect x="96" y="30" width="2" height="48" rx="1" fill="rgba(127,119,221,0.3)"/>
+        <!-- Plants on shelves -->
+        <rect x="28" y="18" width="3" height="12" rx="1" fill="#66BB6A" opacity="0.9"/>
+        <ellipse cx="29.5" cy="17" rx="5" ry="3.5" fill="#4CAF50"/>
+        <rect x="50" y="14" width="3" height="16" rx="1" fill="#388E3C"/>
+        <ellipse cx="51.5" cy="13" rx="6" ry="4" fill="#66BB6A"/>
+        <rect x="72" y="20" width="3" height="10" rx="1" fill="#4CAF50" opacity="0.8"/>
+        <!-- pots -->
+        <rect x="26" y="29" width="7" height="3" rx="1" fill="#BA7517" opacity="0.7"/>
+        <rect x="48" y="29" width="7" height="3" rx="1" fill="#EF9F27" opacity="0.5"/>
+        <rect x="70" y="29" width="7" height="3" rx="1" fill="#BA7517" opacity="0.6"/>
+        <!-- lower shelf plants -->
+        <rect x="30" y="44" width="3" height="11" rx="1" fill="#4CAF50" opacity="0.8"/>
+        <rect x="60" y="42" width="3" height="13" rx="1" fill="#66BB6A"/>
+        <rect x="85" y="45" width="3" height="10" rx="1" fill="#4CAF50" opacity="0.7"/>
+      </svg>
+      <div class="g-label">Prateleiras modulares</div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div id="form-body">
+
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-bar" id="prog"></div>
+      </div>
+      <span class="progress-label" id="prog-label">0 / 4</span>
+    </div>
+
+    <!-- Q1 Name -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">👤</div>
+        <span class="card-title">Identificação</span>
+      </div>
+      <div class="q-label"><span class="q-req"></span>Qual é o seu nome?</div>
+      <div class="q-hint">Como devemos te chamar</div>
+      <input type="text" id="q-name" placeholder="Ex: Maria Silva" oninput="refresh()">
+    </div>
+
+    <!-- Q2 Stars -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">⭐</div>
+        <span class="card-title">Avaliação</span>
+      </div>
+      <div class="q-label"><span class="q-req"></span>Como você avalia o aplicativo?</div>
+      <div class="q-hint">Clique nas estrelas para dar sua nota</div>
+      <div class="stars" id="stars">
+        <div class="star" onclick="setStars(1)">★</div>
+        <div class="star" onclick="setStars(2)">★</div>
+        <div class="star" onclick="setStars(3)">★</div>
+        <div class="star" onclick="setStars(4)">★</div>
+        <div class="star" onclick="setStars(5)">★</div>
+        <span class="star-desc" id="star-lbl">Selecione</span>
+      </div>
+    </div>
+
+    <!-- Q3 Experience -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">💬</div>
+        <span class="card-title">Feedback</span>
+      </div>
+      <div class="q-label"><span class="q-req"></span>Conte sobre sua experiência com o app</div>
+      <div class="q-hint">O que funcionou bem? O que poderia melhorar?</div>
+      <textarea id="q-exp" maxlength="500" placeholder="Ex: Achei fácil navegar, mas senti falta de filtros mais avançados..." oninput="refresh(); countChars()"></textarea>
+      <div class="char-count" id="char-cnt">0 / 500</div>
+    </div>
+
+    <!-- Q4 Recommend -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">📣</div>
+        <span class="card-title">Recomendação <span class="new-badge">✦ novo</span></span>
+      </div>
+      <div class="q-label"><span class="q-req"></span>Você indicaria o aplicativo para outra pessoa?</div>
+      <div class="q-hint">Escolha a opção que melhor reflete sua opinião</div>
+      <div class="radio-list" id="rec-list">
+        <div class="r-opt" data-val="sim" data-color="green" onclick="pickRec(this)">
+          <div class="r-dot"></div>
+          <div class="r-icon">👍</div>
+          <div><div class="r-main">Sim</div><div class="r-sub">Recomendaria sem hesitar</div></div>
+        </div>
+        <div class="r-opt" data-val="nao" data-color="red" onclick="pickRec(this)">
+          <div class="r-dot"></div>
+          <div class="r-icon">👎</div>
+          <div><div class="r-main">Não indicaria</div><div class="r-sub">Ainda não estou satisfeito(a)</div></div>
+        </div>
+        <div class="r-opt" data-val="ressalvas" data-color="amber" onclick="pickRec(this)">
+          <div class="r-dot"></div>
+          <div class="r-icon">🤔</div>
+          <div><div class="r-main">Indicaria, mas com ressalvas</div><div class="r-sub">Tem pontos que precisam de atenção</div></div>
+        </div>
+        <div class="r-opt" data-val="mudancas" data-color="" onclick="pickRec(this)">
+          <div class="r-dot"></div>
+          <div class="r-icon">🔧</div>
+          <div><div class="r-main">Indicaria depois de implementar mudanças</div><div class="r-sub">Tem potencial, mas precisa evoluir</div></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submit()">Enviar avaliação →</button>
+
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success" id="success">
+    <div class="check-ring">✓</div>
+    <h2>Obrigado pelo seu feedback!</h2>
+    <p>Sua avaliação foi registrada com sucesso.<br>Vamos usar ela para cultivar um app ainda melhor. 🌱</p>
+  </div>
+
+</div>
+
+<script>
+  let stars = 0;
+  let rec = null;
+  const labels = ['','Muito ruim','Ruim','Regular','Bom','Excelente!'];
+
+  function setStars(n) {
+    stars = n;
+    document.querySelectorAll('.star').forEach((s,i) => {
+      s.classList.toggle('lit', i < n);
+    });
+    const lbl = document.getElementById('star-lbl');
+    lbl.textContent = labels[n];
+    lbl.style.color = n >= 4 ? '#EF9F27' : n === 3 ? '#AFA9EC' : '#E24B4A';
+    refresh();
+  }
+
+  function pickRec(el) {
+    document.querySelectorAll('.r-opt').forEach(o => {
+      o.classList.remove('sel','green','red','amber');
+    });
+    el.classList.add('sel');
+    const col = el.dataset.color;
+    if (col) el.classList.add(col);
+    rec = el.dataset.val;
+    refresh();
+  }
+
+  function countChars() {
+    const v = document.getElementById('q-exp').value.length;
+    document.getElementById('char-cnt').textContent = v + ' / 500';
+  }
+
+  function refresh() {
+    const name = document.getElementById('q-name').value.trim();
+    const exp  = document.getElementById('q-exp').value.trim();
+    let n = 0;
+    if (name) n++;
+    if (stars) n++;
+    if (exp)  n++;
+    if (rec)  n++;
+    document.getElementById('prog').style.width = (n/4*100)+'%';
+    document.getElementById('prog-label').textContent = n + ' / 4';
+  }
+
+  function submit() {
+    const name = document.getElementById('q-name').value.trim();
+    const exp  = document.getElementById('q-exp').value.trim();
+    const btn  = document.getElementById('submit-btn');
+    if (!name || !stars || !exp || !rec) {
+      btn.classList.add('error');
+      btn.textContent = '⚠ Preencha todos os campos obrigatórios';
+      setTimeout(() => {
+        btn.classList.remove('error');
+        btn.textContent = 'Enviar avaliação →';
+      }, 2800);
+      return;
+    }
+    document.getElementById('form-body').style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  }
+</script>
+</body>
+</html>
