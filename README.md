@@ -1,4 +1,4 @@
-# API_forms_excel_ui 🚀
+# API_forms_excel_ui 
 
 ## 📋 Project Overview
 This project is an intelligent **Data Ingestion** solution designed to bridge the gap between user-facing collection and structured data storage. By integrating Google Forms with automation scripts and AI-driven design, I have created a pipeline that ensures high-quality data entry and a seamless user experience.
